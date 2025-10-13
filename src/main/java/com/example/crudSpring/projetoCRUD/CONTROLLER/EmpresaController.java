@@ -1,5 +1,7 @@
 package com.example.crudSpring.projetoCRUD.CONTROLLER;
 
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -71,6 +73,13 @@ public class EmpresaController {
      empresaService.deletarEmpresa(id);
        return "redirect:/empresaCTR/listarTodasEmpresas";
    }
+   
+   @GetMapping("/buscarEmpresaNome")
+   public List<Empresa> executarBuscaPorNome(
+    @RequestParam("nome") String nome_empresa, Model oModel) {
+      return empresaService.buscarEmpresaPorNome(nome_empresa);
+    }
+   
    
 
 }
