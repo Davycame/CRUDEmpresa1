@@ -13,73 +13,77 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.example.crudSpring.projetoCRUD.ENTITY.Empresa;
 import com.example.crudSpring.projetoCRUD.SERVICE.EmpresaService;
 
-
 @Controller
 @RequestMapping("/empresaCTR")
 public class EmpresaController {
-   
-    private final EmpresaService empresaService;
 
-    //processo de instaciação de classe
-    public EmpresaController(EmpresaService ligacaoEmpresaService){
-        this.empresaService = ligacaoEmpresaService;
-    }
-   @GetMapping("/viewCadEmpresa")
-   public String mostrarFormCadastro(Model oModel){
-   oModel.addAttribute("empresa", new Empresa());
-   return "cadastroEmpresa";
-   }
+  private final EmpresaService empresaService;
 
-   @GetMapping("/listarTodasEmpresas")
-   public String listarEmpresas(Model oModel){
+  // processo de instaciação de classe
+  public EmpresaController(EmpresaService ligacaoEmpresaService) {
+    this.empresaService = ligacaoEmpresaService;
+  }
+
+  @GetMapping("/viewCadEmpresa")
+  public String mostrarFormCadastro(Model oModel) {
+    oModel.addAttribute("empresa", new Empresa());
+    return "cadastroEmpresa";
+  }
+
+  @GetMapping("/listarTodasEmpresas")
+  public String listarEmpresas(Model oModel) {
     oModel.addAttribute("empresas", empresaService.findAll());
     return "listarEmpresas";
-   }
+  }
 
-   @PostMapping("/salvarEmpresa")
-   public String salvarEmpresa(@ModelAttribute Empresa objEmpresa){
-    //chamando o método cadastrar e passando
-    //o objeto("pacotinho") com os dados que precisam ser salvos
+  @PostMapping("/salvarEmpresa")
+  public String salvarEmpresa(@ModelAttribute Empresa objEmpresa) {
+    // chamando o método cadastrar e passando
+    // o objeto("pacotinho") com os dados que precisam ser salvos
     empresaService.cadastrarEmpresa(objEmpresa);
     return "redirect:/empresaCTR/listarTodasEmpresas";
-   
 
-   }
+  }
 
-   @GetMapping("/editar/{id}")
-   public String formEditar(@PathVariable("id") Long id, Model oModel){
+  @GetMapping("/editar/{id}")
+  public String formEditar(@PathVariable("id") Long id, Model oModel) {
 
     Empresa objEmpresa = empresaService.buscaPorId(id)
-    .orElseThrow(() -> new
-    IllegalArgumentException("Empresa não encontrada"));
+        .orElseThrow(() -> new IllegalArgumentException("Empresa não encontrada"));
 
     oModel.addAttribute("empresaEditar", objEmpresa);
     return "editarEmpresa";
-   }
+  }
 
-
-   @PostMapping("/atualizarEmpresa/{id}")
-   public String empresaAtualizar(@PathVariable("id") Long id,
-   @ModelAttribute Empresa objEmpresaAtualizada){
+  @PostMapping("/atualizarEmpresa/{id}")
+  public String empresaAtualizar(@PathVariable("id") Long id,
+      @ModelAttribute Empresa objEmpresaAtualizada) {
 
     empresaService.editarDadosEmpresa(id, objEmpresaAtualizada);
 
     return "redirect:/empresaCTR/listarTodasEmpresas";
-   }
+  }
 
-   @GetMapping("/deletarEmpresa/{id}")
-   public String apagarEmpresa(@PathVariable("id") Long id) {
+  @GetMapping("/deletarEmpresa/{id}")
+  public String apagarEmpresa(@PathVariable("id") Long id) {
 
-     empresaService.deletarEmpresa(id);
-       return "redirect:/empresaCTR/listarTodasEmpresas";
-   }
-   
-   @GetMapping("/buscarEmpresaNome")
-   public List<Empresa> executarBuscaPorNome(
-    @RequestParam("nome") String nome_empresa, Model oModel) {
-      return empresaService.buscarEmpresaPorNome(nome_empresa);
+    empresaService.deletarEmpresa(id);
+    return "redirect:/empresaCTR/listarTodasEmpresas";
+  }
+
+  @GetMapping("/formbuscarEmpresaNome")
+  public String mostrarFormBusca(Model oModel) {
+    return "buscarEmpresaNome";
+  }
+
+  @GetMapping("/buscarEmpresaNome")
+  public String executarBuscaPorNome(
+      @RequestParam("nome") String nome_empresa, Model oModel) {
+
+    if (nome_empresa != null && !nome_empresa.isEmpty()) {
+      oModel.addAttribute("empresaNome", empresaService.buscarEmpresaPorNome(nome_empresa));
     }
-   
-   
+    return "buscarEmpresaNome";
+  }
 
 }
