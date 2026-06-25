@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/CSS/styles.css}">
+    <title>Recuperação de Senha - Tabajara</title>
+</head>
+<body class="page-auth">
+    <div class="bg-grid"></div>
+    <div class="bg-orb orb-1"></div>
+    <div class="bg-orb orb-2"></div>
+
+    <div class="auth-split">
+        <div class="auth-side-brand">
+            <div class="auth-brand-logo">OT</div>
+            <h2 class="auth-brand-name">Organizações<br>Tabajara</h2>
+            <p class="auth-brand-tagline">Recupere o acesso sem sair do fluxo do sistema.</p>
+        </div>
+
+        <div class="auth-side-form">
+            <div class="auth-card">
+                <div class="auth-card-icon-top">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                </div>
+                <div class="auth-card-header">
+                    <h1>Recuperar senha</h1>
+                    <p>Digite seu e-mail e enviaremos as instruções de recuperação.</p>
+                </div>
+
+                <div th:if="${erro}" class="alert alert-error">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                    <span th:text="${erro}"></span>
+                </div>
+                <div th:if="${mensagem}" class="alert alert-success">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                    <span th:text="${mensagem}"></span>
+                </div>
+
+                <form action="/esqueci-senha" method="post" class="auth-form">
+                    <div class="form-field">
+                        <label for="email">E-mail</label>
+                        <div class="input-wrap">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                            <input type="email" id="email" name="email" placeholder="seu@email.com" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">Enviar instruções</button>
+                </form>
+
+                <div class="auth-card-footer">
+                    <a th:href="@{/login}" class="btn btn-ghost btn-full">← Voltar para o login</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

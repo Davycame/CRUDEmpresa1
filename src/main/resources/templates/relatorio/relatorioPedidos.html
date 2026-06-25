@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/CSS/styles.css}">
+    <title>Relatório de Pedidos - Tabajara</title>
+</head>
+<body class="page-inner">
+    <div class="bg-grid"></div>
+
+    <header class="topbar">
+        <div class="topbar-brand">
+            <div class="topbar-logo">OT</div>
+            <span>Tabajara</span>
+        </div>
+        <nav class="topbar-nav">
+            <a th:href="@{/home}" class="topbar-link">Home</a>
+            <a th:href="@{/produtos/listar}" class="topbar-link">Produtos</a>
+            <a th:href="@{/fornecedores/listar}" class="topbar-link">Fornecedores</a>
+            <a th:href="@{/pedidos/criar}" class="topbar-link">Pedidos</a>
+            <a th:href="@{/relatorios/pedidos}" class="topbar-link active">Relatórios</a>
+        </nav>
+    </header>
+
+    <main class="inner-wrapper">
+        <div class="page-header">
+            <div>
+                <div class="page-header-tag">Relatórios</div>
+                <h1 class="page-title">Relatório de pedidos</h1>
+                <p class="page-sub">Acompanhe clientes e totais de venda em uma visão consolidada.</p>
+            </div>
+            <a th:href="@{/relatorios/pedidos/pdf}" target="_blank" class="btn btn-primary">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                Gerar PDF
+            </a>
+        </div>
+
+        <div class="table-card">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Cliente</th>
+                        <th>Total da venda</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="pedido : ${pedidos}">
+                        <td class="td-id" th:text="${pedido.id}"></td>
+                        <td class="td-main" th:text="${pedido.usuario != null ? pedido.usuario.nomeUsuario : 'Sem cliente'}"></td>
+                        <td th:text="${pedido.totalPedido}"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+</body>
+</html>

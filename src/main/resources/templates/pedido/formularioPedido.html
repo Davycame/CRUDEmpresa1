@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/CSS/styles.css}">
+    <title>Novo Pedido - Tabajara</title>
+</head>
+<body class="page-inner">
+    <div class="bg-grid"></div>
+
+    <header class="topbar">
+        <div class="topbar-brand">
+            <div class="topbar-logo">OT</div>
+            <span>Tabajara</span>
+        </div>
+        <nav class="topbar-nav">
+            <a th:href="@{/home}" class="topbar-link">Home</a>
+            <a th:href="@{/produtos/listar}" class="topbar-link">Produtos</a>
+            <a th:href="@{/fornecedores/listar}" class="topbar-link">Fornecedores</a>
+            <a th:href="@{/pedidos/criar}" class="topbar-link active">Pedidos</a>
+            <a th:href="@{/relatorios/pedidos}" class="topbar-link">Relatórios</a>
+        </nav>
+    </header>
+
+    <main class="inner-wrapper">
+        <div class="page-header">
+            <div>
+                <div class="page-header-tag">Pedidos</div>
+                <h1 class="page-title">Novo pedido</h1>
+                <p class="page-sub">Selecione o usuário, adicione produtos e confira o total antes de salvar.</p>
+            </div>
+            <a th:href="@{/home}" class="btn btn-outline">Voltar</a>
+        </div>
+
+        <datalist id="listaUsuarios">
+            <option th:each="u : ${usuarios}" th:value="${u.idUsuario + ' - ' + u.nomeUsuario}"></option>
+        </datalist>
+        <datalist id="listaProdutos">
+            <option th:each="p : ${produtos}" th:value="${p.idProduto + ' - ' + p.descricaoProduto}" th:attr="data-preco=${p.valorProduto}"></option>
+        </datalist>
+
+        <section class="form-card">
+            <div class="styled-form">
+                <div class="form-field">
+                    <label for="usuario">Usuário</label>
+                    <div class="input-wrap">
+                        <input list="listaUsuarios" id="usuario" type="text" placeholder="Digite o nome ou código do usuário">
+                    </div>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-field">
+                        <label for="produto">Produto</label>
+                        <div class="input-wrap">
+                            <input list="listaProdutos" id="produto" type="text" placeholder="Digite o produto">
+                        </div>
+                    </div>
+
+                    <div class="form-field">
+                        <label for="quantidade">Quantidade</label>
+                        <div class="input-wrap">
+                            <input type="number" id="quantidade" placeholder="0" min="1">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-outline" onclick="adicionarItem()">Adicionar produto</button>
+                </div>
+
+                <div class="table-card">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Produto</th>
+                                <th>Quantidade</th>
+                                <th>Preço unitário</th>
+                                <th>Subtotal</th>
+                                <th>Ação</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabela-itens">
+                            <tr id="empty-row" class="empty-row">
+                                <td colspan="5">Nenhum produto adicionado ao pedido.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="order-summary">
+                    <span>Total do pedido</span>
+                    <strong>R$ <span id="totalPedido">0,00</span></strong>
+                </div>
+
+                <button type="button" class="btn btn-primary btn-full" onclick="salvarPedido()">Confirmar e salvar pedido</button>
+            </div>
+        </section>
+    </main>
+
+<script>
+    let itens = [];
+
+    function adicionarItem() {
+        let produtoInput = document.getElementById("produto").value;
+        let quantidade = document.getElementById("quantidade").value;
+
+        if (!produtoInput || quantidade <= 0) {
+            alert("Preencha corretamente o produto e a quantidade!");
+            return;
+        }
+
+        let partes = produtoInput.split(" - ");
+        let produtoId = partes[0];
+        let produtoNome = partes[1];
+
+        let options = document.querySelectorAll("#listaProdutos option");
+        let preco = null;
+
+        options.forEach(opt => {
+            if (opt.value === produtoInput) {
+                preco = opt.getAttribute("data-preco");
+            }
+        });
+
+        if (!preco) {
+            alert("Produto inválido! Selecione um produto da lista.");
+            return;
+        }
+
+        quantidade = parseInt(quantidade);
+        preco = parseFloat(preco);
+
+        let itemExistente = itens.find(item => item.produto.idProduto == produtoId);
+
+        if (itemExistente) {
+            itemExistente.quantidade += quantidade;
+            itemExistente.subtotal = itemExistente.quantidade * itemExistente.preco;
+        } else {
+            itens.push({
+                produto: { idProduto: produtoId },
+                nomeProduto: produtoNome,
+                quantidade: quantidade,
+                preco: preco,
+                subtotal: quantidade * preco
+            });
+        }
+
+        document.getElementById("produto").value = "";
+        document.getElementById("quantidade").value = "";
+
+        renderTabela();
+    }
+
+    function removerItem(index) {
+        itens.splice(index, 1);
+        renderTabela();
+    }
+
+    function alterarQuantidade(index, novaQuantidade) {
+        if (novaQuantidade <= 0) {
+            alert("Quantidade inválida!");
+            return;
+        }
+
+        let item = itens[index];
+        item.quantidade = parseInt(novaQuantidade);
+        item.subtotal = item.quantidade * item.preco;
+
+        renderTabela();
+    }
+
+    function renderTabela() {
+        let tabela = document.getElementById("tabela-itens");
+
+        tabela.innerHTML = "";
+
+        if (itens.length === 0) {
+            tabela.innerHTML = `<tr class="empty-row" id="empty-row"><td colspan="5">Nenhum produto adicionado ao pedido.</td></tr>`;
+            document.getElementById("totalPedido").innerText = "0,00";
+            return;
+        }
+
+        let total = 0;
+
+        itens.forEach((item, index) => {
+            total += item.subtotal;
+
+            tabela.innerHTML += `
+                <tr>
+                    <td class="td-main">${item.nomeProduto}</td>
+                    <td>
+                        <input type="number" min="1" value="${item.quantidade}" onchange="alterarQuantidade(${index}, this.value)">
+                    </td>
+                    <td>R$ ${item.preco.toFixed(2).replace('.', ',')}</td>
+                    <td>R$ ${item.subtotal.toFixed(2).replace('.', ',')}</td>
+                    <td>
+                        <button class="btn-remove" onclick="removerItem(${index})">Remover</button>
+                    </td>
+                </tr>
+            `;
+        });
+
+        document.getElementById("totalPedido").innerText = total.toFixed(2).replace('.', ',');
+    }
+
+    function salvarPedido() {
+        let usuarioInput = document.getElementById("usuario").value;
+
+        if (!usuarioInput) {
+            alert("Selecione um usuário antes de salvar!");
+            return;
+        }
+
+        if (itens.length === 0) {
+            alert("Adicione ao menos um produto ao pedido!");
+            return;
+        }
+
+        let usuarioId = usuarioInput.split(" - ")[0];
+
+        let pedido = {
+            usuario: { idUsuario: usuarioId },
+            itens: itens
+        };
+
+        fetch("/pedidos", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(pedido)
+        })
+        .then(res => res.json())
+        .then(data => {
+            alert("Pedido salvo com sucesso!");
+            location.reload();
+        })
+        .catch(err => {
+            alert("Erro ao salvar o pedido. Tente novamente.");
+            console.error(err);
+        });
+    }
+</script>
+</body>
+</html>
