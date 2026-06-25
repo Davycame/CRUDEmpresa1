@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-br">
+<head>
+    <title>Relatório de Pedidos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            color: #1c1730;
+        }
+
+        h1 {
+            margin-bottom: 4px;
+            text-align: center;
+            color: #4b1ca0;
+        }
+
+        .subtitle {
+            margin-bottom: 22px;
+            text-align: center;
+            color: #686076;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #efe7ff;
+            color: #3d197c;
+            text-align: left;
+        }
+
+        th, td {
+            border: 1px solid #cfc3e8;
+            padding: 8px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Relatório de Pedidos</h1>
+    <div class="subtitle">Organizações Tabajara</div>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Cliente</th>
+                <th>Total da venda</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="pedido : ${pedidos}">
+                <td th:text="${pedido.id}"></td>
+                <td th:text="${pedido.usuario != null ? pedido.usuario.nomeUsuario : 'Sem cliente'}"></td>
+                <td th:text="${pedido.totalPedido}"></td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

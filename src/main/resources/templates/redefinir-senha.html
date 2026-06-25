@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/CSS/styles.css}">
+    <title>Redefinir Senha - Tabajara</title>
+</head>
+<body class="page-auth">
+    <div class="bg-grid"></div>
+    <div class="bg-orb orb-1"></div>
+    <div class="bg-orb orb-2"></div>
+
+    <div class="auth-split">
+        <div class="auth-side-brand">
+            <div class="auth-brand-logo">OT</div>
+            <h2 class="auth-brand-name">Organizações<br>Tabajara</h2>
+            <p class="auth-brand-tagline">Defina uma nova senha e retorne ao painel com segurança.</p>
+        </div>
+
+        <div class="auth-side-form">
+            <div class="auth-card">
+                <div class="auth-card-icon-top">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                </div>
+                <div class="auth-card-header">
+                    <h1>Nova senha</h1>
+                    <p>Crie uma senha forte para proteger sua conta.</p>
+                </div>
+
+                <div th:if="${erro != null}" class="alert alert-error">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                    <span th:text="${erro}"></span>
+                </div>
+
+                <form th:action="@{/redefinir-senha}" method="post" class="auth-form" id="resetForm">
+                    <input type="hidden" name="token" th:value="${token}">
+
+                    <div class="form-field">
+                        <label for="novaSenha">Nova senha</label>
+                        <div class="input-wrap">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                            <input type="password" id="novaSenha" name="novaSenha" placeholder="Digite sua nova senha" required>
+                        </div>
+                    </div>
+
+                    <div class="form-field">
+                        <label for="confirmarSenha">Confirmar senha</label>
+                        <div class="input-wrap">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                            <input type="password" id="confirmarSenha" name="confirmarSenha" placeholder="Confirme sua nova senha" required>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-full">Redefinir senha</button>
+                </form>
+
+                <div class="auth-card-footer">
+                    <a th:href="@{/login}" class="btn btn-ghost btn-full">← Voltar para o login</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('resetForm').addEventListener('submit', function(e) {
+            var nova = document.getElementById('novaSenha').value;
+            var conf = document.getElementById('confirmarSenha').value;
+            if (nova !== conf) {
+                e.preventDefault();
+                alert('As senhas não coincidem. Por favor, tente novamente.');
+            }
+        });
+    </script>
+</body>
+</html>

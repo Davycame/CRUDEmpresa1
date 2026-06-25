@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/CSS/styles.css}">
+    <title>Home - Organizações Tabajara</title>
+</head>
+
+<body class="page-inner">
+    <div class="bg-grid"></div>
+
+    <header class="topbar">
+        <div class="topbar-brand">
+            <div class="topbar-logo">OT</div>
+            <span>Tabajara</span>
+        </div>
+        <nav class="topbar-nav">
+            <a th:href="@{/produtos/listar}" class="topbar-link">Produtos</a>
+            <a th:href="@{/fornecedores/listar}" class="topbar-link">Fornecedores</a>
+            <a th:href="@{/pedidos/criar}" class="topbar-link">Pedidos</a>
+            <a th:href="@{/relatorios/pedidos}" class="topbar-link">Relatórios</a>
+        </nav>
+    </header>
+
+    <main class="dashboard-wrapper">
+        <div class="page-header">
+            <div class="page-header-tag">Painel personalizável</div>
+            <h1 class="page-title">Controle sua operação<br>em tempo real</h1>
+            <p class="page-sub">Ajuste o preço no painel e veja o gráfico responder automaticamente.</p>
+        </div>
+
+        <section class="custom-dashboard" data-theme="violet">
+            <div class="custom-dashboard-main">
+                <div class="dashboard-panel-head">
+                    <div>
+                        <div class="chart-title" id="dashTitlePreview">Receita estimada</div>
+                        <div class="dashboard-live-value">R$ <span id="pricePreview">128.430</span></div>
+                    </div>
+                    <div class="dashboard-trend" id="trendPreview">+18.4%</div>
+                </div>
+
+                <div class="dashboard-chart-shell">
+                    <canvas id="priceDashboardChart" class="dashboard-chart" aria-label="Gráfico de preço digitável"></canvas>
+                    <div class="dashboard-chart-glow"></div>
+                </div>
+
+                <div class="dashboard-kpis">
+                    <div class="dashboard-kpi">
+                        <span>Ticket médio</span>
+                        <strong>R$ <span id="ticketPreview">1.284</span></strong>
+                    </div>
+                    <div class="dashboard-kpi">
+                        <span>Pedidos previstos</span>
+                        <strong id="ordersPreview">100</strong>
+                    </div>
+                    <div class="dashboard-kpi">
+                        <span>Intensidade</span>
+                        <strong id="intensityPreview">64%</strong>
+                    </div>
+                </div>
+            </div>
+
+            <aside class="dashboard-controls">
+                <div class="controls-title">Personalizar painel</div>
+
+                <label class="control-field" for="dashboardTitle">
+                    <span>Título</span>
+                    <input id="dashboardTitle" type="text" value="Receita estimada" maxlength="32">
+                </label>
+
+                <label class="control-field" for="priceInput">
+                    <span>Preço atual</span>
+                    <input id="priceInput" type="number" value="128430" min="0" max="500000" step="100">
+                </label>
+
+                <label class="control-field" for="targetInput">
+                    <span>Meta</span>
+                    <input id="targetInput" type="number" value="200000" min="1000" max="800000" step="1000">
+                </label>
+
+                <label class="control-field" for="themeSelect">
+                    <span>Tema</span>
+                    <select id="themeSelect">
+                        <option value="violet">Violeta</option>
+                        <option value="cyan">Ciano</option>
+                        <option value="rose">Rosa</option>
+                    </select>
+                </label>
+            </aside>
+        </section>
+
+        <div class="dashboard-grid">
+            <a th:href="@{/produtos/listar}" class="dash-card">
+                <div class="dash-card-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+                    </svg>
+                </div>
+                <div class="dash-card-body">
+                    <h2>Gerenciar produtos</h2>
+                    <p>Cadastre, edite e organize o catálogo de produtos da empresa.</p>
+                </div>
+                <div class="dash-card-arrow">→</div>
+            </a>
+
+            <a th:href="@{/fornecedores/listar}" class="dash-card">
+                <div class="dash-card-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <rect x="2" y="7" width="20" height="14" rx="2" />
+                        <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2" />
+                        <line x1="12" y1="12" x2="12" y2="16" />
+                        <line x1="10" y1="14" x2="14" y2="14" />
+                    </svg>
+                </div>
+                <div class="dash-card-body">
+                    <h2>Gerenciar fornecedores</h2>
+                    <p>Controle fornecedores, contatos e informações de cada parceiro.</p>
+                </div>
+                <div class="dash-card-arrow">→</div>
+            </a>
+
+            <a th:href="@{/pedidos/criar}" class="dash-card">
+                <div class="dash-card-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M14 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7z" />
+                        <path d="M14 2v5h5" />
+                        <line x1="12" y1="12" x2="12" y2="16" />
+                        <line x1="10" y1="14" x2="14" y2="14" />
+                    </svg>
+                </div>
+                <div class="dash-card-body">
+                    <h2>Criar pedido</h2>
+                    <p>Cadastre pedidos, selecione clientes e adicione produtos.</p>
+                </div>
+                <div class="dash-card-arrow">→</div>
+            </a>
+
+            <a th:href="@{/relatorios/pedidos}" class="dash-card">
+                <div class="dash-card-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M14 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7z" />
+                        <path d="M14 2v5h5" />
+                        <line x1="9" y1="17" x2="9" y2="13" />
+                        <line x1="12" y1="17" x2="12" y2="10" />
+                        <line x1="15" y1="17" x2="15" y2="14" />
+                    </svg>
+                </div>
+                <div class="dash-card-body">
+                    <h2>Gerar relatório</h2>
+                    <p>Consulte resultados de pedidos e exporte relatórios em PDF.</p>
+                </div>
+                <div class="dash-card-arrow">→</div>
+            </a>
+        </div>
+    </main>
+
+    <script>
+        (function () {
+            var hoverTargets = document.querySelectorAll('.dash-card, .custom-dashboard, .dashboard-kpi');
+            hoverTargets.forEach(function (card) {
+                card.addEventListener('pointermove', function (event) {
+                    var rect = card.getBoundingClientRect();
+                    card.style.setProperty('--mx', ((event.clientX - rect.left) / rect.width * 100).toFixed(2) + '%');
+                    card.style.setProperty('--my', ((event.clientY - rect.top) / rect.height * 100).toFixed(2) + '%');
+                });
+            });
+
+            var dashboard = document.querySelector('.custom-dashboard');
+            var canvas = document.getElementById('priceDashboardChart');
+            var ctx = canvas.getContext('2d');
+            var titleInput = document.getElementById('dashboardTitle');
+            var priceInput = document.getElementById('priceInput');
+            var targetInput = document.getElementById('targetInput');
+            var themeSelect = document.getElementById('themeSelect');
+            var pricePreview = document.getElementById('pricePreview');
+            var ticketPreview = document.getElementById('ticketPreview');
+            var ordersPreview = document.getElementById('ordersPreview');
+            var intensityPreview = document.getElementById('intensityPreview');
+            var trendPreview = document.getElementById('trendPreview');
+            var dashTitlePreview = document.getElementById('dashTitlePreview');
+            var currentValue = Number(priceInput.value);
+            var targetValue = Number(priceInput.value);
+            var history = [42000, 56000, 72000, 68000, 84000, 96000, 112000, currentValue];
+
+            function formatCurrency(value) {
+                return Math.round(value).toLocaleString('pt-BR');
+            }
+
+            function clamp(value, min, max) {
+                return Math.max(min, Math.min(max, value));
+            }
+
+            function resizeCanvas() {
+                var ratio = window.devicePixelRatio || 1;
+                var rect = canvas.getBoundingClientRect();
+                canvas.width = Math.max(1, Math.floor(rect.width * ratio));
+                canvas.height = Math.max(1, Math.floor(rect.height * ratio));
+                ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+            }
+
+            function updateDashboard(pushHistory) {
+                targetValue = Number(priceInput.value) || 0;
+                var goal = Math.max(1, Number(targetInput.value) || 1);
+                var intensity = clamp(targetValue / goal, 0, 1.35);
+                var orders = Math.max(1, Math.round(targetValue / 1284));
+                var ticket = targetValue / orders;
+                var previous = history.length > 1 ? history[history.length - 2] : targetValue;
+                var trend = previous > 0 ? ((targetValue - previous) / previous) * 100 : 0;
+
+                if (pushHistory) {
+                    history.push(targetValue);
+                    if (history.length > 14) history.shift();
+                }
+
+                dashTitlePreview.textContent = titleInput.value.trim() || 'Receita estimada';
+                pricePreview.textContent = formatCurrency(targetValue);
+                ticketPreview.textContent = formatCurrency(ticket);
+                ordersPreview.textContent = orders;
+                intensityPreview.textContent = Math.round(intensity * 100) + '%';
+                trendPreview.textContent = (trend >= 0 ? '+' : '') + trend.toFixed(1) + '%';
+                trendPreview.classList.toggle('is-negative', trend < 0);
+                dashboard.style.setProperty('--dash-level', Math.round(clamp(intensity, 0, 1) * 100) + '%');
+            }
+
+            function draw(time) {
+                var width = canvas.clientWidth;
+                var height = canvas.clientHeight;
+                if (!width || !height) {
+                    requestAnimationFrame(draw);
+                    return;
+                }
+
+                currentValue += (targetValue - currentValue) * 0.08;
+                var animatedHistory = history.slice(0, -1).concat(currentValue);
+                var maxValue = Math.max(Number(targetInput.value) || 1, Math.max.apply(null, animatedHistory), 1);
+                var minValue = Math.min.apply(null, animatedHistory.concat(0));
+                var range = Math.max(1, maxValue - minValue);
+                var pad = 22;
+                var usableHeight = height - pad * 2;
+                var step = width / (animatedHistory.length - 1);
+
+                ctx.clearRect(0, 0, width, height);
+
+                ctx.save();
+                ctx.globalAlpha = 0.3;
+                ctx.strokeStyle = 'rgba(255,255,255,0.13)';
+                ctx.lineWidth = 1;
+                for (var grid = 1; grid < 4; grid++) {
+                    var gy = (height / 4) * grid;
+                    ctx.beginPath();
+                    ctx.moveTo(0, gy);
+                    ctx.lineTo(width, gy);
+                    ctx.stroke();
+                }
+                ctx.restore();
+
+                var coords = animatedHistory.map(function (value, index) {
+                    var normalized = (value - minValue) / range;
+                    var wave = Math.sin(time * 0.002 + index * 0.8) * 3;
+                    return {
+                        x: index * step,
+                        y: height - pad - normalized * usableHeight + wave
+                    };
+                });
+
+                var path = new Path2D();
+                var fillPath = new Path2D();
+                path.moveTo(coords[0].x, coords[0].y);
+                fillPath.moveTo(0, height);
+                fillPath.lineTo(coords[0].x, coords[0].y);
+
+                for (var i = 0; i < coords.length - 1; i++) {
+                    var current = coords[i];
+                    var next = coords[i + 1];
+                    var cx = (current.x + next.x) / 2;
+                    path.bezierCurveTo(cx, current.y, cx, next.y, next.x, next.y);
+                    fillPath.bezierCurveTo(cx, current.y, cx, next.y, next.x, next.y);
+                }
+
+                fillPath.lineTo(width, height);
+                fillPath.closePath();
+
+                var fill = ctx.createLinearGradient(0, 0, 0, height);
+                fill.addColorStop(0, 'rgba(255, 63, 199, 0.36)');
+                fill.addColorStop(0.46, 'rgba(168, 85, 255, 0.18)');
+                fill.addColorStop(1, 'rgba(39, 214, 255, 0)');
+                ctx.fillStyle = fill;
+                ctx.fill(fillPath);
+
+                var stroke = ctx.createLinearGradient(0, 0, width, 0);
+                stroke.addColorStop(0, '#7c3cff');
+                stroke.addColorStop(0.5, '#ff3fc7');
+                stroke.addColorStop(1, '#27d6ff');
+                ctx.lineWidth = 3;
+                ctx.strokeStyle = stroke;
+                ctx.shadowBlur = 18;
+                ctx.shadowColor = 'rgba(255, 63, 199, 0.64)';
+                ctx.stroke(path);
+                ctx.shadowBlur = 0;
+
+                var last = coords[coords.length - 1];
+                ctx.fillStyle = '#ffffff';
+                ctx.beginPath();
+                ctx.arc(last.x, last.y, 4.5, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.strokeStyle = 'rgba(255,255,255,0.24)';
+                ctx.beginPath();
+                ctx.moveTo(last.x, last.y);
+                ctx.lineTo(last.x, height);
+                ctx.stroke();
+
+                requestAnimationFrame(draw);
+            }
+
+            titleInput.addEventListener('input', function () { updateDashboard(false); });
+            priceInput.addEventListener('input', function () { updateDashboard(true); });
+            targetInput.addEventListener('input', function () { updateDashboard(false); });
+            themeSelect.addEventListener('change', function () {
+                dashboard.dataset.theme = themeSelect.value;
+            });
+
+            resizeCanvas();
+            updateDashboard(false);
+            window.addEventListener('resize', resizeCanvas);
+            requestAnimationFrame(draw);
+        })();
+    </script>
+</body>
+
+</html>

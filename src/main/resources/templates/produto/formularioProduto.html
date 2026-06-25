@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/CSS/styles.css}">
+    <title>Produto - Organizações Tabajara</title>
+</head>
+<body class="page-inner">
+    <div class="bg-grid"></div>
+
+    <header class="topbar">
+        <div class="topbar-brand">
+            <div class="topbar-logo">OT</div>
+            <span>Tabajara</span>
+        </div>
+        <nav class="topbar-nav">
+            <a th:href="@{/home}" class="topbar-link">Home</a>
+            <a th:href="@{/produtos/listar}" class="topbar-link active">Produtos</a>
+            <a th:href="@{/fornecedores/listar}" class="topbar-link">Fornecedores</a>
+            <a th:href="@{/pedidos/criar}" class="topbar-link">Pedidos</a>
+        </nav>
+    </header>
+
+    <main class="inner-wrapper inner-narrow">
+        <div class="page-header">
+            <div>
+                <div class="page-header-tag">Produtos</div>
+                <h1 class="page-title">Cadastrar produto</h1>
+                <p class="page-sub">Preencha os dados do produto abaixo.</p>
+            </div>
+        </div>
+
+        <div class="form-card">
+            <form th:action="@{/produtos/salvar}" method="POST" th:object="${produto}" class="styled-form">
+                <input type="hidden" name="idProduto" th:field="*{idProduto}" />
+
+                <div class="form-grid">
+                    <div class="form-field form-field-full">
+                        <label for="descricaoProduto">Descrição do produto</label>
+                        <div class="input-wrap">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+                            <input type="text" id="descricaoProduto" name="descricaoProduto" th:field="*{descricaoProduto}" placeholder="Ex: Arroz Integral 5kg">
+                        </div>
+                    </div>
+
+                    <div class="form-field">
+                        <label for="valorProduto">Valor (R$)</label>
+                        <div class="input-wrap">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                            <input type="text" id="valorProduto" name="valorProduto" th:field="*{valorProduto}" placeholder="0,00">
+                        </div>
+                    </div>
+
+                    <div class="form-field">
+                        <label for="unidadeProduto">Unidade</label>
+                        <div class="input-wrap">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                            <input type="text" id="unidadeProduto" name="unidadeProduto" th:field="*{unidadeProduto}" placeholder="Ex: un, kg, L">
+                        </div>
+                    </div>
+
+                    <div class="form-field">
+                        <label for="marcaProduto">Marca</label>
+                        <div class="input-wrap">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+                            <input type="text" id="marcaProduto" name="marcaProduto" th:field="*{marcaProduto}" placeholder="Ex: Tio João">
+                        </div>
+                    </div>
+
+                    <div class="form-field form-field-full">
+                        <label for="fornecedor">Fornecedor</label>
+                        <div class="input-wrap input-wrap-select">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+                            <select id="fornecedor" name="fornecedorId" required>
+                                <option value="" disabled selected>Selecione o fornecedor</option>
+                                <option th:each="fornecedor : ${fornecedores}"
+                                        th:text="${fornecedor.nomeFornecedor}"
+                                        th:value="${fornecedor.idFornecedor}"
+                                        th:selected="${produto.fornecedor != null and produto.fornecedor.idFornecedor == fornecedor.idFornecedor}">
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <a th:href="@{/produtos/listar}" class="btn btn-outline">Cancelar</a>
+                    <button type="submit" class="btn btn-primary">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                        Salvar produto
+                    </button>
+                </div>
+            </form>
+        </div>
+    </main>
+</body>
+</html>
