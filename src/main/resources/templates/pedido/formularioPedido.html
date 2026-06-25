@@ -21,6 +21,9 @@
             <a th:href="@{/pedidos/criar}" class="topbar-link active">Pedidos</a>
             <a th:href="@{/relatorios/pedidos}" class="topbar-link">Relatórios</a>
         </nav>
+        <form th:action="@{/logout}" method="post" class="logout-form">
+            <button type="submit" class="btn btn-outline btn-logout">login off</button>
+        </form>
     </header>
 
     <main class="inner-wrapper">

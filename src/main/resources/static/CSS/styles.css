@@ -209,6 +209,23 @@ svg { display: block; flex-shrink: 0; }
   border-color: var(--border);
   background: rgba(255, 255, 255, 0.07);
 }
+.logout-form {
+  display: flex;
+  align-items: center;
+  margin-left: 0.25rem;
+}
+.btn-logout {
+  min-height: 38px;
+  padding: 0.58rem 0.92rem;
+  color: #ffd4e1;
+  border-color: rgba(255, 95, 143, 0.34);
+  background: rgba(255, 95, 143, 0.08);
+}
+.btn-logout:hover {
+  color: #fff;
+  border-color: rgba(255, 95, 143, 0.72);
+  background: rgba(255, 95, 143, 0.16);
+}
 
 .page-inner,
 .page-index,
@@ -1033,6 +1050,7 @@ tr.empty-row td { color: var(--text-faint); text-align: center; }
   .form-field-full { grid-column: auto; }
   .topbar { align-items: flex-start; flex-direction: column; padding: 1rem; }
   .topbar-nav { justify-content: flex-start; }
+  .logout-form { margin-left: 0; }
   .page-header { align-items: flex-start; flex-direction: column; }
 }
 
